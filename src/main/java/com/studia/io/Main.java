@@ -15,7 +15,7 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
         stage.setResizable(false);
         stage.setTitle("Sudoku");
-        stage.setScene(new Scene(root, 700, 500));
+        stage.setScene(new Scene(root, 710, 500));
         stage.show();
     }
 

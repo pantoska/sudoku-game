@@ -9,7 +9,6 @@ out
 *.log
 
 # Intellij
-#.idea/
 *.iml
 *.iws
 
