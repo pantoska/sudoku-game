@@ -2,12 +2,15 @@ package com.studia.io.controller;
 
 import com.studia.io.model.BoardRepository;
 import com.studia.io.service.BoardService;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -28,6 +31,12 @@ public class BoardController implements Initializable {
     @FXML Button button7;
     @FXML Button button8;
     @FXML Button button9;
+    @FXML Button buttonClear;
+    @FXML MenuButton menuButton;
+    @FXML MenuItem easyMode;
+    @FXML MenuItem mediumMode;
+    @FXML MenuItem hardMode;
+
 
     private final int x = 250;
     private final int y = 20;
@@ -52,6 +61,11 @@ public class BoardController implements Initializable {
         button7.setOnMouseClicked(this::buttonSevenPressed);
         button8.setOnMouseClicked(this::buttonEightPressed);
         button9.setOnMouseClicked(this::buttonNinePressed);
+        buttonClear.setOnMouseClicked(this::buttonClearPressed);
+        easyMode.setOnAction(this::setModeEasy);
+        mediumMode.setOnAction(this::setModeMedium);
+        hardMode.setOnAction(this::setModeHard);
+
     }
 
     private void drawGame(GraphicsContext context) {
@@ -93,6 +107,7 @@ public class BoardController implements Initializable {
 
     private void drawFilledBoard(GraphicsContext context) {
         int[][] initial = boardService.getBoard();
+        //int[][] initial = boardGenerator.getBoard();
 
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
@@ -173,6 +188,26 @@ public class BoardController implements Initializable {
 
     public void buttonNinePressed(MouseEvent event){
         boardService.userInput(9, selectedRow, selectedColumn);
+        drawGame(canvas.getGraphicsContext2D());
+    }
+
+    public void buttonClearPressed(MouseEvent event){
+        boardService.clearCell(selectedRow,selectedColumn);
+        drawGame(canvas.getGraphicsContext2D());
+    }
+
+    public void setModeEasy(ActionEvent event){
+        boardService.generateBoardWithMode("easy");
+        drawGame(canvas.getGraphicsContext2D());
+    }
+
+    public void setModeMedium(ActionEvent event){
+        boardService.generateBoardWithMode("medium");
+        drawGame(canvas.getGraphicsContext2D());
+    }
+
+    public void setModeHard(ActionEvent event){
+        boardService.generateBoardWithMode("hard");
         drawGame(canvas.getGraphicsContext2D());
     }
 }

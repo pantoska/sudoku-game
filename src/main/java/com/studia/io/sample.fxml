@@ -18,7 +18,7 @@
       <Button fx:id="button6" layoutX="155.0" layoutY="215.0" mnemonicParsing="false" onMouseClicked="#buttonSixPressed" prefHeight="50.0" prefWidth="50.0" text="6" />
       <Button fx:id="button8" layoutX="100.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#buttonEightPressed" prefHeight="50.0" prefWidth="50.0" text="8" />
       <Button fx:id="button9" layoutX="155.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#buttonNinePressed" prefHeight="50.0" prefWidth="50.0" text="9" />
-      <Button fx:id="button_clear" layoutX="65.0" layoutY="355.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Clear cell" />
+      <Button fx:id="buttonClear" layoutX="65.0" layoutY="355.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Clear cell" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" layoutX="150.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" layoutX="300.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
@@ -29,11 +29,11 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" layoutX="150.0" layoutY="300.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" layoutX="300.0" layoutY="300.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
       <Canvas fx:id="canvas" height="450.0" layoutX="250.0" layoutY="20.0" onMouseClicked="#mouseClicked" width="450.0" />
-      <MenuButton layoutX="65.0" layoutY="20.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="New Game">
+      <MenuButton fx:id="menuButton" layoutX="65.0" layoutY="20.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="New Game">
         <items>
-          <MenuItem mnemonicParsing="false" text="Easy" />
-          <MenuItem mnemonicParsing="false" text="Medium" />
-            <MenuItem mnemonicParsing="false" text="Hard" />
+          <MenuItem fx:id="easyMode" mnemonicParsing="false" onAction="#setModeEasy" text="Easy" />
+          <MenuItem fx:id="mediumMode" mnemonicParsing="false" onAction="#setModeMedium" text="Medium" />
+            <MenuItem fx:id="hardMode" mnemonicParsing="false" onAction="#setModeHard" text="Hard" />
         </items>
       </MenuButton>
    </children>

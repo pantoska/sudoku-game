@@ -1,5 +1,6 @@
 package com.studia.io.service;
 
+import com.studia.io.controller.BoardGenerator;
 import com.studia.io.model.BoardProvider;
 import com.studia.io.model.BoardRepository;
 import com.studia.io.model.UserBoardRepository;
@@ -18,6 +19,10 @@ public class BoardService {
         boardRepository.setBoard(boardProvider.getBoard());
     }
 
+    public void generateBoardWithMode(String mode) {
+        boardRepository.setBoard(boardProvider.getBoardWithMode(mode));
+    }
+
     public void generateUserBoard() { userBoardRepository.setBoard(boardProvider.getUserBoard());}
 
     public int[][] getUserBoard() { return userBoardRepository.getBoard();}
@@ -27,6 +32,8 @@ public class BoardService {
     public int[][] getBoard() {
         return boardRepository.getBoard();
     }
+
+    public void clearCell(int row, int value) { boardProvider.clearCell(row, value);}
 
 
 }

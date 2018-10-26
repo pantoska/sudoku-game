@@ -9,7 +9,11 @@ public class BoardProvider {
         return boardGenerator.getBoard();
     }
 
+    public int[][] getBoardWithMode(String mode) { return boardGenerator.setMode(mode).getBoard(); }
+
     public int[][] getUserBoard() { return boardGenerator.getUserBoard();}
 
     public void modifyCells(int value, int row, int column){ boardGenerator.modifyCells(value,row,column);}
+
+    public void clearCell(int row, int column) { boardGenerator.clearCell(row, column);}
 }

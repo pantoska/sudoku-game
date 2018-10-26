@@ -10,12 +10,22 @@ public class BoardGenerator {
     private int[][] userBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE];
     private int[][] removedNumbersBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE];
     private int[][] currentBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE];
-    private final Random random = new Random();
 
     public int[][] getBoard(){
-        setFullBoard(0,0);
-        clearRandomCells();
+        Random random = new Random(1000000000);
+        setFullBoard(random,0,0);
+        clearRandomCells(random);
         return board;
+    }
+
+    public BoardGenerator setMode(String mode){
+        if (mode.equals("easy"))
+            clearCells = 45;
+        else if(mode.equals("medium"))
+            clearCells = 65;
+        else if(mode.equals("hard"))
+            clearCells = 85;
+        return this;
     }
 
     public int[][] getUserBoard(){
@@ -66,10 +76,9 @@ public class BoardGenerator {
         return true;
     }
 
-    private boolean setFullBoard(int row, int column)
+    private boolean setFullBoard(Random random, int row, int column)
     {
         int i=0;
-
         do {
             int nextRow, nextColumn;
 
@@ -88,7 +97,7 @@ public class BoardGenerator {
                 if (nextColumn == 0 && nextRow == 9)
                     return true;
 
-                if(setFullBoard(nextRow, nextColumn))
+                if(setFullBoard(random, nextRow, nextColumn))
                     return true;
             }
             i++;
@@ -98,8 +107,11 @@ public class BoardGenerator {
         return false;
     }
 
-    private void clearRandomCells(){
+    public void clearCell(int row, int column){
+        userBoard[row][column] = 0;
+    }
 
+    private void clearRandomCells(Random random){
         while(clearCells != 0){
             int clearX = random.nextInt(8) + 1;
             int clearY = random.nextInt(8) + 1;
