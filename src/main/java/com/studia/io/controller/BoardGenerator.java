@@ -7,6 +7,9 @@ import java.util.Random;
 public class BoardGenerator {
     private int clearCells = 45;
     private int[][] board = new int[BoardRepository.SIZE][BoardRepository.SIZE];
+    private int[][] userBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE];
+    private int[][] removedNumbersBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE];
+    private int[][] currentBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE];
     private final Random random = new Random();
 
     public int[][] getBoard(){
@@ -15,11 +18,19 @@ public class BoardGenerator {
         return board;
     }
 
-    private boolean checkRow(int row, int column) {
+    public int[][] getUserBoard(){
+        return userBoard;
+    }
+
+    public int[][] getRemovedNumbersBoard(){
+        return removedNumbersBoard;
+    }
+
+    private boolean checkRow(int row, int column, int[][] b) {
         int i=0;
         while ( i < 9 ) {
             if (i != column) {
-                if (board[row][i] == board[row][column] )
+                if (b[row][i] == b[row][column] )
                     return false;
             }
             i++;
@@ -27,11 +38,11 @@ public class BoardGenerator {
         return true;
     }
 
-    private boolean checkColumn(int row, int column) {
+    private boolean checkColumn(int row, int column, int[][] b) {
         int i=0;
         while ( i < 9 ) {
             if (i != row) {
-                if (board[i][column] == board[row][column])
+                if (b[i][column] == b[row][column])
                     return false;
 
             }
@@ -40,14 +51,14 @@ public class BoardGenerator {
         return true;
     }
 
-    private boolean checkSquare(int row, int column) {
+    private boolean checkSquare(int row, int column, int[][] b) {
         int height = row/3;
         int width = column/3;
 
         for (int i = height * 3; i < (height*3 + 3); i++) {
             for (int j = width * 3; j < (width*3 + 3); j++) {
                 if (!(i == row && j == column)) {
-                    if (board[ row ][ column ] == board[i][j])
+                    if (b[ row ][ column ] == b[i][j])
                         return false;
                 }
             }
@@ -64,7 +75,7 @@ public class BoardGenerator {
 
             board[row][column] = random.nextInt(9) + 1;
 
-            if ( checkColumn(row, column) && checkRow(row, column) && checkSquare(row, column)) {
+            if ( checkColumn(row, column,board) && checkRow(row, column, board) && checkSquare(row, column, board)) {
                 nextRow = row;
                 nextColumn = column;
                 nextColumn++;
@@ -85,7 +96,6 @@ public class BoardGenerator {
 
         board[row][column] = 0;
         return false;
-
     }
 
     private void clearRandomCells(){
@@ -94,9 +104,38 @@ public class BoardGenerator {
             int clearX = random.nextInt(8) + 1;
             int clearY = random.nextInt(8) + 1;
 
+            removedNumbersBoard[clearX][clearY] = board[clearX][clearY];
+
             board[clearX][clearY] = 0;
             clearCells--;
         }
     }
 
+    private boolean checkInput(int value, int row, int column){
+
+        for(int i=0; i <BoardRepository.SIZE; i++){
+            for(int j =0; j<BoardRepository.SIZE;j++){
+                if(board[i][j] != 0){
+                    currentBoard[i][j] = board[i][j];
+                }
+                else if(userBoard[i][j] != 0){
+                    currentBoard[i][j] = board[i][j];
+                }
+            }
+        }
+
+        currentBoard[row][column] = value;
+
+        if(checkColumn(row, column,currentBoard) && checkRow(row, column, currentBoard) && checkSquare(row, column, currentBoard)){
+            return true;
+        }
+        return false;
+    }
+
+    public void modifyCells(int value, int row, int column){
+        if(board[row][column] == 0)
+            if(value > 0 && value <= 9 && checkInput(value,row,column))
+                userBoard[row][column] = value;
+
+    }
 }
