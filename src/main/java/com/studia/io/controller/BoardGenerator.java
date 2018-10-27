@@ -10,30 +10,30 @@ public class BoardGenerator {
     private int[][] userBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE];
     private int[][] removedNumbersBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE];
     private int[][] currentBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE];
+    private static final Random random = new Random();
 
-    public int[][] getBoard(){
-        Random random = new Random(1000000000);
-        setFullBoard(random,0,0);
-        clearRandomCells(random);
+    public int[][] getBoard(String mode){
+        setMode(mode);
+        setFullBoard(0,0);
+        clearRandomCells();
         return board;
     }
 
-    public BoardGenerator setMode(String mode){
+    public int[][] getDefaultBoard(){
+        return board;
+    }
+
+    private void setMode(String mode){
         if (mode.equals("easy"))
             clearCells = 45;
         else if(mode.equals("medium"))
             clearCells = 65;
         else if(mode.equals("hard"))
             clearCells = 85;
-        return this;
     }
 
     public int[][] getUserBoard(){
         return userBoard;
-    }
-
-    public int[][] getRemovedNumbersBoard(){
-        return removedNumbersBoard;
     }
 
     private boolean checkRow(int row, int column, int[][] b) {
@@ -76,14 +76,12 @@ public class BoardGenerator {
         return true;
     }
 
-    private boolean setFullBoard(Random random, int row, int column)
+    private boolean setFullBoard(int row, int column)
     {
         int i=0;
         do {
             int nextRow, nextColumn;
-
             board[row][column] = random.nextInt(9) + 1;
-
             if ( checkColumn(row, column,board) && checkRow(row, column, board) && checkSquare(row, column, board)) {
                 nextRow = row;
                 nextColumn = column;
@@ -97,7 +95,7 @@ public class BoardGenerator {
                 if (nextColumn == 0 && nextRow == 9)
                     return true;
 
-                if(setFullBoard(random, nextRow, nextColumn))
+                if(setFullBoard(nextRow, nextColumn))
                     return true;
             }
             i++;
@@ -111,12 +109,12 @@ public class BoardGenerator {
         userBoard[row][column] = 0;
     }
 
-    private void clearRandomCells(Random random){
+    private void clearRandomCells(){
         while(clearCells != 0){
-            int clearX = random.nextInt(8) + 1;
-            int clearY = random.nextInt(8) + 1;
-
-            removedNumbersBoard[clearX][clearY] = board[clearX][clearY];
+            int clearX = random.nextInt(9);
+            int clearY = random.nextInt(9);
+            if(board[clearX][clearY] != 0)
+                removedNumbersBoard[clearX][clearY] = board[clearX][clearY];
 
             board[clearX][clearY] = 0;
             clearCells--;
@@ -131,7 +129,7 @@ public class BoardGenerator {
                     currentBoard[i][j] = board[i][j];
                 }
                 else if(userBoard[i][j] != 0){
-                    currentBoard[i][j] = board[i][j];
+                    currentBoard[i][j] = userBoard[i][j];
                 }
             }
         }
@@ -148,6 +146,19 @@ public class BoardGenerator {
         if(board[row][column] == 0)
             if(value > 0 && value <= 9 && checkInput(value,row,column))
                 userBoard[row][column] = value;
+            else
+                System.out.println("Nie możesz tu wprowadzić tej wartośći");
+
+
+    }
+
+    public void clearUserBoard(){
+        for(int i=0; i <BoardRepository.SIZE; i++){
+            for(int j =0; j<BoardRepository.SIZE;j++) {
+                userBoard[i][j] = 0;
+
+            }
+        }
 
     }
 }

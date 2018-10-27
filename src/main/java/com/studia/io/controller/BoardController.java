@@ -2,6 +2,8 @@ package com.studia.io.controller;
 
 import com.studia.io.model.BoardRepository;
 import com.studia.io.service.BoardService;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -14,6 +16,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -44,6 +47,7 @@ public class BoardController implements Initializable {
     private int selectedRow;
     private int selectedColumn;
     private final BoardService boardService = new BoardService();
+    private boolean start = false;
 
 
     @Override
@@ -85,8 +89,9 @@ public class BoardController implements Initializable {
         context.setLineWidth(5);
         context.strokeRoundRect(selectedColumn * 50 + 2, selectedRow * 50 + 2, 46, 46, 10, 10);
 
+        if(start){
         drawFilledBoard(context);
-        drawFilledUserBoard(context);
+        drawFilledUserBoard(context);}
     }
 
     public void mouseClicked() {
@@ -107,7 +112,6 @@ public class BoardController implements Initializable {
 
     private void drawFilledBoard(GraphicsContext context) {
         int[][] initial = boardService.getBoard();
-        //int[][] initial = boardGenerator.getBoard();
 
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
@@ -145,6 +149,16 @@ public class BoardController implements Initializable {
             }
         }
     }
+
+    Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(10), new EventHandler<ActionEvent>() {
+
+        @Override
+        public void handle(ActionEvent event) {
+            easyMode.setDisable(false);
+            mediumMode.setDisable(false);
+            hardMode.setDisable(false);
+        }
+    }));
 
     public void buttonOnePressed(MouseEvent event){
         boardService.userInput(1, selectedRow, selectedColumn);
@@ -197,17 +211,38 @@ public class BoardController implements Initializable {
     }
 
     public void setModeEasy(ActionEvent event){
-        boardService.generateBoardWithMode("easy");
+        start = true;
+        boardService.generateBoard("easy");
+        setButtonDisable();
+        boardService.clearUserBoard();
         drawGame(canvas.getGraphicsContext2D());
+        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
+        fiveSecondsWonder.play();
     }
 
     public void setModeMedium(ActionEvent event){
-        boardService.generateBoardWithMode("medium");
+        start = true;
+        boardService.generateBoard("medium");
+        setButtonDisable();
+        boardService.clearUserBoard();
         drawGame(canvas.getGraphicsContext2D());
+        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
+        fiveSecondsWonder.play();
     }
 
     public void setModeHard(ActionEvent event){
-        boardService.generateBoardWithMode("hard");
+        start = true;
+        boardService.generateBoard("hard");
+        setButtonDisable();
+        boardService.clearUserBoard();
         drawGame(canvas.getGraphicsContext2D());
+        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
+        fiveSecondsWonder.play();
+    }
+
+    private void setButtonDisable(){
+        easyMode.setDisable(true);
+        mediumMode.setDisable(true);
+        hardMode.setDisable(true);
     }
 }
