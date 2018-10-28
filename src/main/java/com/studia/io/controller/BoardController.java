@@ -1,11 +1,9 @@
 package com.studia.io.controller;
 
 import com.studia.io.model.BoardRepository;
+import com.studia.io.model.GameMode;
 import com.studia.io.service.BoardService;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -16,7 +14,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -70,6 +67,7 @@ public class BoardController implements Initializable {
         mediumMode.setOnAction(this::setModeMedium);
         hardMode.setOnAction(this::setModeHard);
 
+
     }
 
     private void drawGame(GraphicsContext context) {
@@ -91,27 +89,26 @@ public class BoardController implements Initializable {
 
         if(start){
         drawFilledBoard(context);
-        drawFilledUserBoard(context);}
+        //drawFilledUserBoard(context);
+        }
     }
 
     public void mouseClicked() {
-        canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                int mouseX = (int) event.getX();
-                int mouseY = (int) event.getY();
+        canvas.setOnMouseClicked(event -> {
+            int mouseX = (int) event.getX();
+            int mouseY = (int) event.getY();
 
-                selectedRow = (int) (mouseY / 50);
-                selectedColumn = (int) (mouseX / 50);
+            selectedRow = (int) (mouseY / 50);
+            selectedColumn = (int) (mouseX / 50);
 
-                drawGame(canvas.getGraphicsContext2D());
-            }
+            drawGame(canvas.getGraphicsContext2D());
         });
 
     }
 
     private void drawFilledBoard(GraphicsContext context) {
         int[][] initial = boardService.getBoard();
+        int[][] initialUser = boardService.getUserBoard();
 
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
@@ -124,41 +121,18 @@ public class BoardController implements Initializable {
 
                 if (initial[row][col] != 0) {
                     context.fillText(initial[row][col] + "", position_x, position_y);
-
                 }
-            }
-        }
-    }
-
-    private void drawFilledUserBoard(GraphicsContext context) {
-        int[][] initial = boardService.getUserBoard();
-
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-
-                int position_y = row * 50 + 30;
-                int position_x = col * 50 + 20;
 
                 context.setFill(Color.RED);
                 context.setFont(new Font(20));
 
-                if (initial[row][col] != 0) {
-                    context.fillText(initial[row][col] + "", position_x, position_y);
+                if (initialUser[row][col] != 0) {
+                    context.fillText(initialUser[row][col] + "", position_x, position_y);
 
                 }
             }
         }
     }
-
-    Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(10), new EventHandler<ActionEvent>() {
-
-        @Override
-        public void handle(ActionEvent event) {
-            easyMode.setDisable(false);
-            mediumMode.setDisable(false);
-            hardMode.setDisable(false);
-        }
-    }));
 
     public void buttonOnePressed(MouseEvent event){
         boardService.userInput(1, selectedRow, selectedColumn);
@@ -211,38 +185,21 @@ public class BoardController implements Initializable {
     }
 
     public void setModeEasy(ActionEvent event){
-        start = true;
-        boardService.generateBoard("easy");
-        setButtonDisable();
-        boardService.clearUserBoard();
-        drawGame(canvas.getGraphicsContext2D());
-        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-        fiveSecondsWonder.play();
+        setMode(GameMode.EASY.getMode());
     }
 
     public void setModeMedium(ActionEvent event){
-        start = true;
-        boardService.generateBoard("medium");
-        setButtonDisable();
-        boardService.clearUserBoard();
-        drawGame(canvas.getGraphicsContext2D());
-        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-        fiveSecondsWonder.play();
+        setMode(GameMode.MEDIUM.getMode());
     }
 
     public void setModeHard(ActionEvent event){
-        start = true;
-        boardService.generateBoard("hard");
-        setButtonDisable();
-        boardService.clearUserBoard();
-        drawGame(canvas.getGraphicsContext2D());
-        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-        fiveSecondsWonder.play();
+        setMode(GameMode.HARD.getMode());
     }
 
-    private void setButtonDisable(){
-        easyMode.setDisable(true);
-        mediumMode.setDisable(true);
-        hardMode.setDisable(true);
+    private void setMode(String mode){
+        start = true;
+        boardService.generateBoard(mode);
+        boardService.clearUserBoard();
+        drawGame(canvas.getGraphicsContext2D());
     }
 }

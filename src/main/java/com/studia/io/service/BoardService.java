@@ -16,14 +16,11 @@ public class BoardService {
 
     public void generateBoard(String mode) { boardRepository.setBoard(boardProvider.getBoard(mode)); }
 
-    public void generateUserBoard() { userBoardRepository.setBoard(boardProvider.getUserBoard()); }
-
     public int[][] getUserBoard() { return userBoardRepository.getBoard();}
 
     public void userInput(int value, int row, int column) { boardProvider.modifyCells(value, row, column);}
 
-    public int[][] getBoard() { return boardRepository.getBoard();
-    }
+    public int[][] getBoard() { return boardRepository.getBoard(); }
 
     public void clearCell(int row, int value) { boardProvider.clearCell(row, value);}
 
