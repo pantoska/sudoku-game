@@ -45,6 +45,7 @@ public class BoardController implements Initializable {
     private int selectedColumn;
     private final BoardService boardService = new BoardService();
     private boolean start = false;
+    private boolean state = false;
 
 
     @Override
@@ -66,8 +67,6 @@ public class BoardController implements Initializable {
         easyMode.setOnAction(this::setModeEasy);
         mediumMode.setOnAction(this::setModeMedium);
         hardMode.setOnAction(this::setModeHard);
-
-
     }
 
     private void drawGame(GraphicsContext context) {
@@ -88,8 +87,11 @@ public class BoardController implements Initializable {
         context.strokeRoundRect(selectedColumn * 50 + 2, selectedRow * 50 + 2, 46, 46, 10, 10);
 
         if(start){
-        drawFilledBoard(context);
-        //drawFilledUserBoard(context);
+            drawFilledBoard(context);
+            if(boardService.checkStatus() && !state){
+                state = true;
+                boardService.endOfGame();
+            }
         }
     }
 
@@ -201,5 +203,6 @@ public class BoardController implements Initializable {
         boardService.generateBoard(mode);
         boardService.clearUserBoard();
         drawGame(canvas.getGraphicsContext2D());
+        state = false;
     }
 }

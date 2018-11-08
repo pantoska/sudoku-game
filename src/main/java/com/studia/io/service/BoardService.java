@@ -25,4 +25,8 @@ public class BoardService {
     public void clearCell(int row, int value) { boardProvider.clearCell(row, value);}
 
     public void clearUserBoard() { boardProvider.clearUserBoard();}
+
+    public void endOfGame() { boardProvider.endOfGame();}
+
+    public boolean checkStatus() { return boardProvider.checkStatus();}
 }

@@ -15,5 +15,9 @@ public class BoardProvider {
 
     public void clearCell(int row, int column) { boardGenerator.clearCell(row, column);}
 
-    public void clearUserBoard() { boardGenerator.clearUserBoard();}
+    public void clearUserBoard() { boardGenerator.resetUserBoard();}
+
+    public void endOfGame() { boardGenerator.endOfGame();}
+
+    public boolean checkStatus() { return boardGenerator.checkStatus();}
 }

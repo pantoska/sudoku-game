@@ -15,6 +15,8 @@ public class BoardGenerator {
     private final BoardValidation boardValidation= new BoardValidation();
 
     public int[][] getBoard(String mode){
+        resetBoard();
+        resetUserBoard();
         setMode(mode);
         setFullBoard(0,0);
         clearRandomCells();
@@ -31,11 +33,11 @@ public class BoardGenerator {
 
     private void setMode(String mode){
         if (mode.equals(GameMode.EASY.getMode()))
-            clearCells = 45;
+            clearCells = 50;
         else if(mode.equals(GameMode.MEDIUM.getMode()))
-            clearCells = 65;
+            clearCells = 58;
         else if(mode.equals(GameMode.HARD.getMode()))
-            clearCells = 85;
+            clearCells = 64;
     }
 
     private boolean setFullBoard(int row, int column)
@@ -79,9 +81,17 @@ public class BoardGenerator {
             board[clearX][clearY] = 0;
             clearCells--;
         }
+
+//        for(int i=0; i <BoardRepository.SIZE; i++) {
+//            for (int j = 0; j < BoardRepository.SIZE; j++) {
+//                System.out.print(board[i][j] + " ");
+//            }
+//            System.out.println("");
+//        }
     }
 
-    public void clearUserBoard(){
+
+    public void resetUserBoard(){
         for(int i=0; i <BoardRepository.SIZE; i++)
             for(int j =0; j<BoardRepository.SIZE;j++)
                 userBoard[i][j] = 0;
@@ -93,6 +103,30 @@ public class BoardGenerator {
                 userBoard[row][column] = value;
             else
                 boardValidation.message("Error");
+    }
+
+    public boolean checkStatus(){
+        for(int i=0; i <BoardRepository.SIZE; i++)
+            for(int j =0; j<BoardRepository.SIZE;j++)
+                if (currentBoard[i][j] == 0 && userBoard[i][j] == 0) {
+                    return false;
+                }
+
+        return true;
+    }
+
+    public void endOfGame(){
+        if(checkStatus()) {
+            boardValidation.messageEndGame();
+        }
+    }
+
+    public void resetBoard(){
+        for(int i=0; i <BoardRepository.SIZE; i++)
+            for(int j =0; j<BoardRepository.SIZE;j++) {
+                board[i][j] = 0;
+                currentBoard[i][j] = 0;
+            }
     }
 
 }
