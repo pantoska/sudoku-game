@@ -1,5 +1,6 @@
 package com.studia.io.service;
 
+import com.studia.io.error.InvalidDataInputEx;
 import com.studia.io.model.BoardProvider;
 import com.studia.io.model.BoardRepository;
 import com.studia.io.model.UserBoardRepository;
@@ -18,7 +19,7 @@ public class BoardService {
 
     public int[][] getUserBoard() { return userBoardRepository.getBoard();}
 
-    public void userInput(int value, int row, int column) { boardProvider.modifyCells(value, row, column);}
+    public void userInput(int value, int row, int column) throws InvalidDataInputEx { boardProvider.modifyCells(value, row, column);}
 
     public int[][] getBoard() { return boardRepository.getBoard(); }
 
@@ -26,7 +27,7 @@ public class BoardService {
 
     public void clearUserBoard() { boardProvider.clearUserBoard();}
 
-    public void endOfGame() { boardProvider.endOfGame();}
+    public boolean endOfGame() { return boardProvider.isEndOfGame();}
 
     public boolean checkStatus() { return boardProvider.checkStatus();}
 }

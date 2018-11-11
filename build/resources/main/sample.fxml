@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="720.0" styleClass="base_pane" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.studia.io.controller.BoardController">
+   <children>
+      <Button fx:id="button7" layoutX="45.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#buttonSevenPressed" prefHeight="50.0" prefWidth="50.0" text="7" />
+      <Button fx:id="button1" layoutX="45.0" layoutY="160.0" mnemonicParsing="false" onMouseClicked="#buttonOnePressed" prefHeight="50.0" prefWidth="50.0" text="1" />
+      <Button fx:id="button2" layoutX="100.0" layoutY="160.0" mnemonicParsing="false" onMouseClicked="#buttonTwoPressed" prefHeight="50.0" prefWidth="50.0" text="2" />
+      <Button fx:id="button3" layoutX="155.0" layoutY="160.0" mnemonicParsing="false" onMouseClicked="#buttonThreePressed" prefHeight="50.0" prefWidth="50.0" text="3" />
+      <Button fx:id="button4" layoutX="45.0" layoutY="215.0" mnemonicParsing="false" onMouseClicked="#buttonFourPressed" prefHeight="50.0" prefWidth="50.0" text="4" />
+      <Button fx:id="button5" layoutX="100.0" layoutY="215.0" mnemonicParsing="false" onMouseClicked="#buttonFivePressed" prefHeight="50.0" prefWidth="50.0" text="5" />
+      <Button fx:id="button6" layoutX="155.0" layoutY="215.0" mnemonicParsing="false" onMouseClicked="#buttonSixPressed" prefHeight="50.0" prefWidth="50.0" text="6" />
+      <Button fx:id="button8" layoutX="100.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#buttonEightPressed" prefHeight="50.0" prefWidth="50.0" text="8" />
+      <Button fx:id="button9" layoutX="155.0" layoutY="270.0" mnemonicParsing="false" onMouseClicked="#buttonNinePressed" prefHeight="50.0" prefWidth="50.0" text="9" />
+      <Button fx:id="buttonClear" layoutX="65.0" layoutY="355.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="Clear cell" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" layoutX="150.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" layoutX="300.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" layoutY="150.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" layoutX="150.0" layoutY="150.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" layoutX="300.0" layoutY="150.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" layoutY="300.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" layoutX="150.0" layoutY="300.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="150.0" layoutX="300.0" layoutY="300.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="150.0" x="250.0" y="20.0" />
+      <Canvas fx:id="canvas" height="450.0" layoutX="250.0" layoutY="20.0" onMouseClicked="#mouseClicked" width="450.0" />
+      <MenuButton fx:id="menuButton" layoutX="65.0" layoutY="20.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="120.0" text="New Game">
+        <items>
+          <MenuItem fx:id="easyMode" mnemonicParsing="false" onAction="#setModeEasy" text="Easy" />
+          <MenuItem fx:id="mediumMode" mnemonicParsing="false" onAction="#setModeMedium" text="Medium" />
+            <MenuItem fx:id="hardMode" mnemonicParsing="false" onAction="#setModeHard" text="Hard" />
+        </items>
+      </MenuButton>
+   </children>
+</Pane>

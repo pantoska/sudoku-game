@@ -1,11 +1,8 @@
 package com.studia.io.validation;
 
 import com.studia.io.model.BoardRepository;
-import javafx.scene.control.Alert;
 
 public class BoardValidation {
-    private static final Alert alert = new Alert(Alert.AlertType.ERROR);
-    private static final Alert message = new Alert(Alert.AlertType.INFORMATION);
 
     public boolean checkRow(int row, int column, int[][] b) {
         int i=0;
@@ -17,7 +14,16 @@ public class BoardValidation {
             i++;
         }
         return true;
+        //return check(b[row], b[row][column], column);
     }
+
+//    public boolean check(int [] b, int value, int column) {
+//        for(int i = 0; i < 9; i ++) {
+//            if (i != column  && b[i] == value )
+//                return false;
+//        }
+//        return true;
+//    }
 
     public boolean checkColumn(int row, int column, int[][] b) {
         int i=0;
@@ -62,20 +68,6 @@ public class BoardValidation {
             currentBoard[row][column] = 0;
 
         return false;
-    }
-
-    public void message(String type){
-        alert.setTitle("Error Dialog");
-        alert.setHeaderText(type);
-        alert.setContentText("You can not input this value here");
-        alert.showAndWait();
-    }
-
-    public void messageEndGame(){
-        message.setTitle("End of game");
-        message.setContentText("You resolved the board! Congratulation");
-        message.showAndWait();
-
     }
 
 }

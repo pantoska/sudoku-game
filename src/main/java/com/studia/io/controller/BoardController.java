@@ -1,5 +1,6 @@
 package com.studia.io.controller;
 
+import com.studia.io.error.InvalidDataInputEx;
 import com.studia.io.model.BoardRepository;
 import com.studia.io.model.GameMode;
 import com.studia.io.service.BoardService;
@@ -8,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
@@ -20,6 +22,9 @@ import java.util.ResourceBundle;
 
 
 public class BoardController implements Initializable {
+
+    private final Alert alert = new Alert(Alert.AlertType.ERROR);
+    private static final Alert message = new Alert(Alert.AlertType.INFORMATION);
 
     @FXML Canvas canvas;
     @FXML Button button1;
@@ -90,7 +95,8 @@ public class BoardController implements Initializable {
             drawFilledBoard(context);
             if(boardService.checkStatus() && !state){
                 state = true;
-                boardService.endOfGame();
+                if(boardService.endOfGame())
+                    messageEndGame();
             }
         }
     }
@@ -137,52 +143,52 @@ public class BoardController implements Initializable {
     }
 
     public void buttonOnePressed(MouseEvent event){
-        boardService.userInput(1, selectedRow, selectedColumn);
-        drawGame(canvas.getGraphicsContext2D());
+        enterNumberInput(1);
     }
 
     public void buttonTwoPressed(MouseEvent event){
-        boardService.userInput(2, selectedRow, selectedColumn);
-        drawGame(canvas.getGraphicsContext2D());
+        enterNumberInput(2);
     }
 
     public void buttonThreePressed(MouseEvent event){
-        boardService.userInput(3, selectedRow, selectedColumn);
-        drawGame(canvas.getGraphicsContext2D());
+        enterNumberInput(3);
     }
 
     public void buttonFourPressed(MouseEvent event){
-        boardService.userInput(4, selectedRow, selectedColumn);
-        drawGame(canvas.getGraphicsContext2D());
+        enterNumberInput(4);
     }
 
     public void buttonFivePressed(MouseEvent event){
-        boardService.userInput(5, selectedRow, selectedColumn);
-        drawGame(canvas.getGraphicsContext2D());
+        enterNumberInput(5);
     }
 
     public void buttonSixPressed(MouseEvent event){
-        boardService.userInput(6, selectedRow, selectedColumn);
-        drawGame(canvas.getGraphicsContext2D());
+        enterNumberInput(6);;
     }
 
     public void buttonSevenPressed(MouseEvent event){
-        boardService.userInput(7, selectedRow, selectedColumn);
-        drawGame(canvas.getGraphicsContext2D());
+        enterNumberInput(7);
     }
 
     public void buttonEightPressed(MouseEvent event){
-        boardService.userInput(8, selectedRow, selectedColumn);
-        drawGame(canvas.getGraphicsContext2D());
+        enterNumberInput(8);
     }
 
     public void buttonNinePressed(MouseEvent event){
-        boardService.userInput(9, selectedRow, selectedColumn);
-        drawGame(canvas.getGraphicsContext2D());
+        enterNumberInput(9);
     }
 
     public void buttonClearPressed(MouseEvent event){
         boardService.clearCell(selectedRow,selectedColumn);
+        drawGame(canvas.getGraphicsContext2D());
+    }
+
+    private void enterNumberInput(int value) {
+        try {
+            boardService.userInput(value, selectedRow, selectedColumn);
+        } catch (InvalidDataInputEx e) {
+            message(e.getMessage());
+        }
         drawGame(canvas.getGraphicsContext2D());
     }
 
@@ -204,5 +210,19 @@ public class BoardController implements Initializable {
         boardService.clearUserBoard();
         drawGame(canvas.getGraphicsContext2D());
         state = false;
+    }
+
+    public void message(String type){
+        alert.setTitle("Error Dialog");
+        alert.setHeaderText(type);
+        alert.setContentText("You can not input this value here");
+        alert.showAndWait();
+    }
+
+    public void messageEndGame(){
+        message.setTitle("End of game");
+        message.setContentText("You resolved the board! Congratulation");
+        message.showAndWait();
+
     }
 }
