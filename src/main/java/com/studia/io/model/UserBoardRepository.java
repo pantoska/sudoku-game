@@ -1,7 +1,7 @@
 package com.studia.io.model;
 
 public class UserBoardRepository {
-    private int board[][];
+    private int[][] board;
 
     public UserBoardRepository(int[][] board) {
         this.board = board;

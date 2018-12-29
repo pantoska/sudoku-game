@@ -6,7 +6,7 @@ import com.studia.io.error.InvalidDataInputEx;
 public class BoardProvider {
     private final BoardGenerator boardGenerator = new BoardGenerator();
 
-    public int[][] getBoard(String mode) { return boardGenerator.getBoard(mode); }
+    public int[][] getStartBoard(String mode) { return boardGenerator.getStartBoard(mode); }
 
     public int[][] getDefaultBoard() {return  boardGenerator.getDefaultBoard();}
 
@@ -16,7 +16,7 @@ public class BoardProvider {
 
     public void clearCell(int row, int column) { boardGenerator.clearCell(row, column);}
 
-    public void clearUserBoard() { boardGenerator.resetUserBoard();}
+    public void resetUserBoard() { boardGenerator.resetUserBoard();}
 
     public boolean isEndOfGame() { return boardGenerator.isEndOfGame();}
 

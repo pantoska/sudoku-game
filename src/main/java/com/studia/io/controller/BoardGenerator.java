@@ -9,23 +9,23 @@ import java.util.Random;
 
 public class BoardGenerator {
     private int clearCells;
-    private int[][] board = new int[BoardRepository.SIZE][BoardRepository.SIZE];
-    private int[][] userBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE];
-    private int[][] currentBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE];
+    private int[][] defaultBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE]; //startboard with some generate numbers
+    private int[][] userBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE]; //defaultBoard with user inputs
+    private int[][] currentBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE]; //defaultBoard connected with defaultBoard and userBoard
     private static final Random random = new Random();
     private final BoardValidation boardValidation = new BoardValidation();
 
-    public int[][] getBoard(String mode){
-        resetBoard();
+    public int[][] getStartBoard(String mode){
+        resetMainBoard();
         resetUserBoard();
         setMode(mode);
-        setFullBoard(0,0);
+        setDefaultBoard(0,0);
         clearRandomCells();
-        return board;
+        return getDefaultBoard();
     }
 
     public int[][] getDefaultBoard(){
-        return board;
+        return defaultBoard;
     }
 
     public int[][] getUserBoard(){
@@ -41,13 +41,13 @@ public class BoardGenerator {
             clearCells = 60;
     }
 
-    private boolean setFullBoard(int row, int column)
+    private boolean setDefaultBoard(int row, int column)
     {
         int i=0;
         do {
             int nextRow, nextColumn;
-            board[row][column] = random.nextInt(9) + 1;
-            if ( boardValidation.checkColumn(row, column, board) && boardValidation.checkRow(row, column, board) && boardValidation.checkSquare(row, column, board)) {
+            defaultBoard[row][column] = random.nextInt(9) + 1;
+            if ( boardValidation.checkColumn(row, column, defaultBoard) && boardValidation.checkRow(row, column, defaultBoard) && boardValidation.checkSquare(row, column, defaultBoard)) {
                 nextRow = row;
                 nextColumn = column;
                 nextColumn++;
@@ -60,13 +60,13 @@ public class BoardGenerator {
                 if (nextColumn == 0 && nextRow == 9)
                     return true;
 
-                if(setFullBoard(nextRow, nextColumn))
+                if(setDefaultBoard(nextRow, nextColumn))
                     return true;
             }
             i++;
         } while(i < 9);
 
-        board[row][column] = 0;
+        defaultBoard[row][column] = 0;
         return false;
     }
 
@@ -79,7 +79,7 @@ public class BoardGenerator {
         while(clearCells != 0){
             int clearX = random.nextInt(9);
             int clearY = random.nextInt(9);
-            board[clearX][clearY] = 0;
+            defaultBoard[clearX][clearY] = 0;
             clearCells--;
         }
     }
@@ -91,8 +91,8 @@ public class BoardGenerator {
     }
 
     public void modifyCells(int value, int row, int column) throws InvalidDataInputEx {
-        if(board[row][column] == 0)
-            if(value > 0 && value <= 9 && boardValidation.checkInput(value,row,column,board, userBoard, currentBoard))
+        if(defaultBoard[row][column] == 0)
+            if(value > 0 && value <= 9 && boardValidation.checkInput(value,row,column, defaultBoard, userBoard, currentBoard))
                 userBoard[row][column] = value;
             else
                throw new InvalidDataInputEx("Invalid input value");
@@ -104,7 +104,6 @@ public class BoardGenerator {
                 if (currentBoard[i][j] == 0 && userBoard[i][j] == 0) {
                     return false;
                 }
-
         return true;
     }
 
@@ -112,10 +111,10 @@ public class BoardGenerator {
         return checkStatus();
     }
 
-    public void resetBoard(){
+    private void resetMainBoard(){
         for(int i=0; i <BoardRepository.SIZE; i++)
             for(int j =0; j<BoardRepository.SIZE;j++) {
-                board[i][j] = 0;
+                defaultBoard[i][j] = 0;
                 currentBoard[i][j] = 0;
             }
     }

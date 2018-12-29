@@ -15,7 +15,7 @@ public class BoardService {
         userBoardRepository = new UserBoardRepository(boardProvider.getUserBoard());
     }
 
-    public void generateBoard(String mode) { boardRepository.setBoard(boardProvider.getBoard(mode)); }
+    public void generateBoard(String mode) { boardRepository.setBoard(boardProvider.getStartBoard(mode)); }
 
     public int[][] getUserBoard() { return userBoardRepository.getBoard();}
 
@@ -25,7 +25,7 @@ public class BoardService {
 
     public void clearCell(int row, int value) { boardProvider.clearCell(row, value);}
 
-    public void clearUserBoard() { boardProvider.clearUserBoard();}
+    public void clearUserBoard() { boardProvider.resetUserBoard();}
 
     public boolean endOfGame() { return boardProvider.isEndOfGame();}
 

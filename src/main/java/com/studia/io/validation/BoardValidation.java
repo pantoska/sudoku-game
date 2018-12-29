@@ -14,16 +14,7 @@ public class BoardValidation {
             i++;
         }
         return true;
-        //return check(b[row], b[row][column], column);
     }
-
-//    public boolean check(int [] b, int value, int column) {
-//        for(int i = 0; i < 9; i ++) {
-//            if (i != column  && b[i] == value )
-//                return false;
-//        }
-//        return true;
-//    }
 
     public boolean checkColumn(int row, int column, int[][] b) {
         int i=0;

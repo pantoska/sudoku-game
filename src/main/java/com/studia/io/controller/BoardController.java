@@ -1,9 +1,9 @@
 package com.studia.io.controller;
 
 import com.studia.io.error.InvalidDataInputEx;
-import com.studia.io.model.BoardRepository;
 import com.studia.io.model.GameMode;
 import com.studia.io.service.BoardService;
+import com.studia.io.view.BoardView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,17 +14,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 
 public class BoardController implements Initializable {
-
-    private final Alert alert = new Alert(Alert.AlertType.ERROR);
-    private static final Alert message = new Alert(Alert.AlertType.INFORMATION);
 
     @FXML Canvas canvas;
     @FXML Button button1;
@@ -42,13 +37,10 @@ public class BoardController implements Initializable {
     @FXML MenuItem mediumMode;
     @FXML MenuItem hardMode;
 
-
-    private final int x = 250;
-    private final int y = 20;
-    private final int sizeOfCanvas = 450;
     private int selectedRow;
     private int selectedColumn;
     private final BoardService boardService = new BoardService();
+    private final BoardView boardView = new BoardView();
     private boolean start = false;
     private boolean state = false;
 
@@ -56,9 +48,9 @@ public class BoardController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         GraphicsContext context = canvas.getGraphicsContext2D();
-        drawGame(context);
         selectedRow = 0;
         selectedColumn = 0;
+        createBoard(context);
         button1.setOnMouseClicked(this::buttonOnePressed);
         button2.setOnMouseClicked(this::buttonTwoPressed);
         button3.setOnMouseClicked(this::buttonThreePressed);
@@ -74,29 +66,15 @@ public class BoardController implements Initializable {
         hardMode.setOnAction(this::setModeHard);
     }
 
-    private void drawGame(GraphicsContext context) {
-
-        context.clearRect(0, 0, sizeOfCanvas, sizeOfCanvas);
-        for (int i = 0; i < BoardRepository.SIZE; i++) {
-            for (int j = 0; j < BoardRepository.SIZE; j++) {
-                int positionX = i * 50 + 2;
-                int positionY = j * 50 + 2;
-                int width = 46;
-                context.setFill(Color.WHITE);
-                context.fillRoundRect(positionX, positionY, width, width, 10, 10);
-            }
-        }
-
-        context.setStroke(Color.GRAY);
-        context.setLineWidth(5);
-        context.strokeRoundRect(selectedColumn * 50 + 2, selectedRow * 50 + 2, 46, 46, 10, 10);
+    private void createBoard(GraphicsContext context){
+        boardView.drawTable(context,selectedColumn,selectedRow);
 
         if(start){
-            drawFilledBoard(context);
+            boardView.drawInputs(context, boardService);
             if(boardService.checkStatus() && !state){
                 state = true;
                 if(boardService.endOfGame())
-                    messageEndGame();
+                    message("null");
             }
         }
     }
@@ -109,87 +87,59 @@ public class BoardController implements Initializable {
             selectedRow = (int) (mouseY / 50);
             selectedColumn = (int) (mouseX / 50);
 
-            drawGame(canvas.getGraphicsContext2D());
+            createBoard(canvas.getGraphicsContext2D());
         });
 
     }
 
-    private void drawFilledBoard(GraphicsContext context) {
-        int[][] initial = boardService.getBoard();
-        int[][] initialUser = boardService.getUserBoard();
-
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-
-                int position_y = row * 50 + 30;
-                int position_x = col * 50 + 20;
-
-                context.setFill(Color.BLACK);
-                context.setFont(new Font(20));
-
-                if (initial[row][col] != 0) {
-                    context.fillText(initial[row][col] + "", position_x, position_y);
-                }
-
-                context.setFill(Color.RED);
-                context.setFont(new Font(20));
-
-                if (initialUser[row][col] != 0) {
-                    context.fillText(initialUser[row][col] + "", position_x, position_y);
-
-                }
-            }
-        }
-    }
-
     public void buttonOnePressed(MouseEvent event){
-        enterNumberInput(1);
+        handleInput(1);
     }
 
     public void buttonTwoPressed(MouseEvent event){
-        enterNumberInput(2);
+        handleInput(2);
     }
 
     public void buttonThreePressed(MouseEvent event){
-        enterNumberInput(3);
+        handleInput(3);
     }
 
     public void buttonFourPressed(MouseEvent event){
-        enterNumberInput(4);
+        handleInput(4);
     }
 
     public void buttonFivePressed(MouseEvent event){
-        enterNumberInput(5);
+        handleInput(5);
     }
 
     public void buttonSixPressed(MouseEvent event){
-        enterNumberInput(6);;
+        handleInput(6);
     }
 
     public void buttonSevenPressed(MouseEvent event){
-        enterNumberInput(7);
+        handleInput(7);
     }
 
     public void buttonEightPressed(MouseEvent event){
-        enterNumberInput(8);
+        handleInput(8);
     }
 
     public void buttonNinePressed(MouseEvent event){
-        enterNumberInput(9);
+        handleInput(9);
     }
 
-    public void buttonClearPressed(MouseEvent event){
+    private void buttonClearPressed(MouseEvent event){
         boardService.clearCell(selectedRow,selectedColumn);
-        drawGame(canvas.getGraphicsContext2D());
+        createBoard(canvas.getGraphicsContext2D());
     }
 
-    private void enterNumberInput(int value) {
+    private void handleInput(int value) {
         try {
             boardService.userInput(value, selectedRow, selectedColumn);
         } catch (InvalidDataInputEx e) {
             message(e.getMessage());
         }
-        drawGame(canvas.getGraphicsContext2D());
+        createBoard(canvas.getGraphicsContext2D());
     }
 
     public void setModeEasy(ActionEvent event){
@@ -208,21 +158,23 @@ public class BoardController implements Initializable {
         start = true;
         boardService.generateBoard(mode);
         boardService.clearUserBoard();
-        drawGame(canvas.getGraphicsContext2D());
+        createBoard(canvas.getGraphicsContext2D());
         state = false;
     }
 
-    public void message(String type){
-        alert.setTitle("Error Dialog");
-        alert.setHeaderText(type);
-        alert.setContentText("You can not input this value here");
-        alert.showAndWait();
-    }
-
-    public void messageEndGame(){
-        message.setTitle("End of game");
-        message.setContentText("You resolved the board! Congratulation");
+    private void message(String type){
+        Alert message;
+        if(type.equals("null")){
+            message = new Alert(Alert.AlertType.INFORMATION);
+            message.setTitle("End of game");
+            message.setContentText("You resolved the board! Congratulation");
+        }
+        else{
+            message = new Alert(Alert.AlertType.ERROR);
+            message.setTitle("Error Dialog");
+            message.setHeaderText(type);
+            message.setContentText("You can not input this value here");
+        }
         message.showAndWait();
-
     }
 }

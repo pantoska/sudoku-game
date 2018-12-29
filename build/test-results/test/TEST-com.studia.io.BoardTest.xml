@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.studia.io.BoardTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2018-11-11T22:27:19" hostname="ThinkPad-X220" time="0.004">
+<testsuite name="com.studia.io.BoardTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2018-12-16T12:56:30" hostname="patrycja-ThinkPad-X220" time="0.005">
   <properties/>
   <testcase name="testRow" classname="com.studia.io.BoardTest" time="0.001"/>
   <testcase name="testInput" classname="com.studia.io.BoardTest" time="0.001"/>

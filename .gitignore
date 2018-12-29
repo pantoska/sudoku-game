@@ -15,3 +15,9 @@ out
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
+
+.plantuml
+
+build/libs/
+build/tmp/
+
