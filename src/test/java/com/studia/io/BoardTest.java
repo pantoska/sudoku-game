@@ -1,6 +1,5 @@
 package com.studia.io;
 
-import com.studia.io.controller.BoardGenerator;
 import com.studia.io.validation.BoardValidation;
 import org.junit.Assert;
 import org.junit.Test;
@@ -36,10 +35,16 @@ public class BoardTest {
         Assert.assertEquals(false,boardValidation.checkSquare(7,7,board));
     }
 
+//    @Test
+//    public void testInput() throws Exception{
+//        int userInput=2;
+//        BoardGenerator boardGenerator = new BoardGenerator();
+//        boardGenerator.modifyCells(userInput,3,1);
+//    }
     @Test
-    public void testInput() throws Exception{
-        int userInput=2;
-        BoardGenerator boardGenerator = new BoardGenerator();
-        boardGenerator.modifyCells(userInput,3,1);
+    public void testInput(){
+        Assert.assertEquals(false,boardValidation.checkInput(8,0,0,board));
     }
+
+
 }
