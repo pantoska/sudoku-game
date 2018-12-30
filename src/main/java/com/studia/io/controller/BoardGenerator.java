@@ -2,34 +2,34 @@ package com.studia.io.controller;
 
 import com.studia.io.error.InvalidDataInputEx;
 import com.studia.io.model.BoardRepository;
+import com.studia.io.model.Cell;
 import com.studia.io.model.GameMode;
 import com.studia.io.validation.BoardValidation;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class BoardGenerator {
     private int clearCells;
     private int[][] defaultBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE]; //startboard with some generate numbers
-    private int[][] userBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE]; //defaultBoard with user inputs
-    private int[][] currentBoard = new int[BoardRepository.SIZE][BoardRepository.SIZE]; //defaultBoard connected with defaultBoard and userBoard
     private static final Random random = new Random();
     private final BoardValidation boardValidation = new BoardValidation();
 
-    public int[][] getStartBoard(String mode){
-        resetMainBoard();
-        resetUserBoard();
+    private Cell cell;
+    private List<Cell> cellList;
+
+    public int[][] renderBoard(String mode){
+        cellList = new ArrayList<>();
+        resetBoard();
         setMode(mode);
-        setDefaultBoard(0,0);
+        setBoard(0,0);
         clearRandomCells();
-        return getDefaultBoard();
+        return getBoard();
     }
 
-    public int[][] getDefaultBoard(){
+    public int[][] getBoard(){
         return defaultBoard;
-    }
-
-    public int[][] getUserBoard(){
-        return userBoard;
     }
 
     private void setMode(String mode){
@@ -41,13 +41,19 @@ public class BoardGenerator {
             clearCells = 60;
     }
 
-    private boolean setDefaultBoard(int row, int column)
+    private boolean setBoard(int row, int column)
     {
         int i=0;
         do {
             int nextRow, nextColumn;
             defaultBoard[row][column] = random.nextInt(9) + 1;
-            if ( boardValidation.checkColumn(row, column, defaultBoard) && boardValidation.checkRow(row, column, defaultBoard) && boardValidation.checkSquare(row, column, defaultBoard)) {
+            if (boardValidation.checkColumn(row, column, defaultBoard) && boardValidation.checkRow(row, column, defaultBoard) && boardValidation.checkSquare(row, column, defaultBoard)) {
+
+                if(row == 8 && column == 8){
+                    cell = new Cell("default",row,column);
+                    cellList.add(cell);
+                }
+
                 nextRow = row;
                 nextColumn = column;
                 nextColumn++;
@@ -60,8 +66,11 @@ public class BoardGenerator {
                 if (nextColumn == 0 && nextRow == 9)
                     return true;
 
-                if(setDefaultBoard(nextRow, nextColumn))
+                if(setBoard(nextRow, nextColumn)){
+                    cell = new Cell("default",row,column);
+                    cellList.add(cell);
                     return true;
+                }
             }
             i++;
         } while(i < 9);
@@ -71,39 +80,60 @@ public class BoardGenerator {
     }
 
     public void clearCell(int row, int column){
-        userBoard[row][column] = 0;
-        currentBoard[row][column] = 0;
+        for(Cell c: cellList){
+            if(c.getState().equals("user") && c.getRow() == row && c.getColumn() == column) {
+                defaultBoard[row][column] = 0;
+            }
+        }
     }
 
     private void clearRandomCells(){
         while(clearCells != 0){
             int clearX = random.nextInt(9);
             int clearY = random.nextInt(9);
-            defaultBoard[clearX][clearY] = 0;
+
+            for(Cell c: cellList){
+                if(c.getRow() == clearX && c.getColumn() == clearY && c.getState().equals("default")) {
+                    c.setState("user");
+                    defaultBoard[clearX][clearY] = 0;
+                }
+            }
             clearCells--;
         }
     }
 
-    public void resetUserBoard(){
-        for(int i=0; i <BoardRepository.SIZE; i++)
-            for(int j =0; j<BoardRepository.SIZE;j++)
-                userBoard[i][j] = 0;
-    }
-
     public void modifyCells(int value, int row, int column) throws InvalidDataInputEx {
-        if(defaultBoard[row][column] == 0)
-            if(value > 0 && value <= 9 && boardValidation.checkInput(value,row,column, defaultBoard, userBoard, currentBoard))
-                userBoard[row][column] = value;
-            else
-               throw new InvalidDataInputEx("Invalid input value");
+        for(Cell c: cellList){
+            if(c.getRow() == row && c.getColumn() == column && c.getState().equals("user")){
+                if(defaultBoard[row][column] == 0) {
+
+                    if (boardValidation.checkInput(value, row, column, defaultBoard)) {
+                        defaultBoard[row][column] = value;
+                    } else {
+                        defaultBoard[row][column] = 0;
+                        throw new InvalidDataInputEx("Invalid input value");
+                    }
+
+                } else if (defaultBoard[row][column] != 0){
+
+                    int previous = defaultBoard[row][column];
+                    if (boardValidation.checkInput(value, row, column, defaultBoard)) {
+                        defaultBoard[row][column] = value;
+                    } else {
+                        defaultBoard[row][column] = previous;
+                        throw new InvalidDataInputEx("Invalid input value");
+                    }
+
+                }
+            }
+        }
     }
 
     public boolean checkStatus(){
         for(int i=0; i <BoardRepository.SIZE; i++)
             for(int j =0; j<BoardRepository.SIZE;j++)
-                if (currentBoard[i][j] == 0 && userBoard[i][j] == 0) {
+                if(defaultBoard[i][j] == 0)
                     return false;
-                }
         return true;
     }
 
@@ -111,12 +141,17 @@ public class BoardGenerator {
         return checkStatus();
     }
 
-    private void resetMainBoard(){
+    private void resetBoard(){
+        if(cellList.size() != 0)
+            cellList.clear();
+
         for(int i=0; i <BoardRepository.SIZE; i++)
             for(int j =0; j<BoardRepository.SIZE;j++) {
                 defaultBoard[i][j] = 0;
-                currentBoard[i][j] = 0;
             }
     }
 
+    public List<Cell> getCellList() {
+        return cellList;
+    }
 }

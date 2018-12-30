@@ -1,6 +1,7 @@
 package com.studia.io.view;
 
 import com.studia.io.model.BoardRepository;
+import com.studia.io.model.Cell;
 import com.studia.io.service.BoardService;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -30,7 +31,6 @@ public class BoardView {
 
     public void drawInputs(GraphicsContext context, BoardService boardService) {
         int[][] initial = boardService.getBoard();
-        int[][] initialUser = boardService.getUserBoard();
 
         for (int row = 0; row < 9; row++) {
             for (int col = 0; col < 9; col++) {
@@ -38,20 +38,49 @@ public class BoardView {
                 int position_y = row * 50 + 30;
                 int position_x = col * 50 + 20;
 
-                context.setFill(Color.BLACK);
-                context.setFont(new Font(20));
 
-                if (initial[row][col] != 0) {
-                    context.fillText(initial[row][col] + "", position_x, position_y);
+                for(Cell c: boardService.getCellList()){
+                    if(c.getRow() == row && c.getColumn() == col){
+
+                        if(c.getState().equals("default")){
+
+                            context.setFill(Color.BLACK);
+                            context.setFont(new Font(20));
+
+                            if (initial[row][col] != 0) {
+                                context.fillText(initial[row][col] + "", position_x, position_y);
+                            }
+
+                        }
+                        else if(c.getState().equals("user")){
+
+                            context.setFill(Color.RED);
+                            context.setFont(new Font(20));
+
+                            if (initial[row][col] != 0) {
+                                context.fillText(initial[row][col] + "", position_x, position_y);
+
+                            }
+                        }
+                    }
                 }
 
-                context.setFill(Color.RED);
-                context.setFont(new Font(20));
 
-                if (initialUser[row][col] != 0) {
-                    context.fillText(initialUser[row][col] + "", position_x, position_y);
+//                context.setFill(Color.RED);
+//                context.setFont(new Font(20));
+//
+//                if (initial[row][col] != 0) {
+//                    context.fillText(initial[row][col] + "", position_x, position_y);
+//
+//                }
+//
+//                context.setFill(Color.BLACK);
+//                context.setFont(new Font(20));
+//
+//                if (initial[row][col] != 0) {
+//                    context.fillText(initial[row][col] + "", position_x, position_y);
+//                }
 
-                }
             }
         }
     }

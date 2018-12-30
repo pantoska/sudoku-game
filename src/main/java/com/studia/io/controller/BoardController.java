@@ -129,8 +129,10 @@ public class BoardController implements Initializable {
     }
 
     private void buttonClearPressed(MouseEvent event){
-        boardService.clearCell(selectedRow,selectedColumn);
-        createBoard(canvas.getGraphicsContext2D());
+        if(start) {
+            boardService.clearCell(selectedRow, selectedColumn);
+            createBoard(canvas.getGraphicsContext2D());
+        }
     }
 
     private void handleInput(int value) {
@@ -156,8 +158,7 @@ public class BoardController implements Initializable {
 
     private void setMode(String mode){
         start = true;
-        boardService.generateBoard(mode);
-        boardService.clearUserBoard();
+        boardService.renderBoard(mode);
         createBoard(canvas.getGraphicsContext2D());
         state = false;
     }
