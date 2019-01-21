@@ -51,16 +51,16 @@ public class BoardController implements Initializable {
         selectedRow = 0;
         selectedColumn = 0;
         createBoard(context);
-        button1.setOnMouseClicked(this::buttonOnePressed);
-        button2.setOnMouseClicked(this::buttonTwoPressed);
-        button3.setOnMouseClicked(this::buttonThreePressed);
-        button4.setOnMouseClicked(this::buttonFourPressed);
-        button5.setOnMouseClicked(this::buttonFivePressed);
-        button6.setOnMouseClicked(this::buttonSixPressed);
-        button7.setOnMouseClicked(this::buttonSevenPressed);
-        button8.setOnMouseClicked(this::buttonEightPressed);
-        button9.setOnMouseClicked(this::buttonNinePressed);
-        buttonClear.setOnMouseClicked(this::buttonClearPressed);
+        button1.setOnMouseClicked(this::buttonOneHandled);
+        button2.setOnMouseClicked(this::buttonTwoHandled);
+        button3.setOnMouseClicked(this::buttonThreeHandled);
+        button4.setOnMouseClicked(this::buttonFourHandled);
+        button5.setOnMouseClicked(this::buttonFiveHandled);
+        button6.setOnMouseClicked(this::buttonSixHandled);
+        button7.setOnMouseClicked(this::buttonSevenHandled);
+        button8.setOnMouseClicked(this::buttonEightHandled);
+        button9.setOnMouseClicked(this::buttonNineHandled);
+        buttonClear.setOnMouseClicked(this::buttonClearHandled);
         easyMode.setOnAction(this::setModeEasy);
         mediumMode.setOnAction(this::setModeMedium);
         hardMode.setOnAction(this::setModeHard);
@@ -68,13 +68,10 @@ public class BoardController implements Initializable {
 
     private void createBoard(GraphicsContext context){
         boardView.drawTable(context,selectedColumn,selectedRow);
-
         if(start){
             boardView.drawInputs(context, boardService);
-            if(boardService.checkStatus() && !state){
-                state = true;
-                if(boardService.endOfGame())
-                    message("null");
+            if(boardService.checkStatus()){
+                message("null");
             }
         }
     }
@@ -92,43 +89,43 @@ public class BoardController implements Initializable {
 
     }
 
-    public void buttonOnePressed(MouseEvent event){
+    public void buttonOneHandled(MouseEvent event){
         handleInput(1);
     }
 
-    public void buttonTwoPressed(MouseEvent event){
+    public void buttonTwoHandled(MouseEvent event){
         handleInput(2);
     }
 
-    public void buttonThreePressed(MouseEvent event){
+    public void buttonThreeHandled(MouseEvent event){
         handleInput(3);
     }
 
-    public void buttonFourPressed(MouseEvent event){
+    public void buttonFourHandled(MouseEvent event){
         handleInput(4);
     }
 
-    public void buttonFivePressed(MouseEvent event){
+    public void buttonFiveHandled(MouseEvent event){
         handleInput(5);
     }
 
-    public void buttonSixPressed(MouseEvent event){
+    public void buttonSixHandled(MouseEvent event){
         handleInput(6);
     }
 
-    public void buttonSevenPressed(MouseEvent event){
+    public void buttonSevenHandled(MouseEvent event){
         handleInput(7);
     }
 
-    public void buttonEightPressed(MouseEvent event){
+    public void buttonEightHandled(MouseEvent event){
         handleInput(8);
     }
 
-    public void buttonNinePressed(MouseEvent event){
+    public void buttonNineHandled(MouseEvent event){
         handleInput(9);
     }
 
-    private void buttonClearPressed(MouseEvent event){
+    private void buttonClearHandled(MouseEvent event){
         if(start) {
             boardService.clearCell(selectedRow, selectedColumn);
             createBoard(canvas.getGraphicsContext2D());
@@ -137,7 +134,7 @@ public class BoardController implements Initializable {
 
     private void handleInput(int value) {
         try {
-            boardService.userInput(value, selectedRow, selectedColumn);
+            boardService.modifyCells(value, selectedRow, selectedColumn);
         } catch (InvalidDataInputEx e) {
             message(e.getMessage());
         }
@@ -160,7 +157,6 @@ public class BoardController implements Initializable {
         start = true;
         boardService.renderBoard(mode);
         createBoard(canvas.getGraphicsContext2D());
-        state = false;
     }
 
     private void message(String type){

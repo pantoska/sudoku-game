@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.studia.io.BoardTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2018-12-16T12:56:30" hostname="patrycja-ThinkPad-X220" time="0.005">
+<testsuite name="com.studia.io.BoardTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2019-01-21T15:22:15" hostname="patrycja-ThinkPad-X220" time="0.019">
   <properties/>
   <testcase name="testRow" classname="com.studia.io.BoardTest" time="0.001"/>
   <testcase name="testInput" classname="com.studia.io.BoardTest" time="0.001"/>
-  <testcase name="testColumn" classname="com.studia.io.BoardTest" time="0.0"/>
+  <testcase name="testMode" classname="com.studia.io.BoardTest" time="0.004"/>
+  <testcase name="testCellList" classname="com.studia.io.BoardTest" time="0.002"/>
+  <testcase name="testCompareModes" classname="com.studia.io.BoardTest" time="0.003"/>
+  <testcase name="testColumn" classname="com.studia.io.BoardTest" time="0.001"/>
   <testcase name="testSquare" classname="com.studia.io.BoardTest" time="0.0"/>
+  <testcase name="testStatus" classname="com.studia.io.BoardTest" time="0.003"/>
+  <testcase name="testCreateBoards" classname="com.studia.io.BoardTest" time="0.003"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

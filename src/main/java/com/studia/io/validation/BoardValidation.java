@@ -41,14 +41,6 @@ public class BoardValidation {
 
     public boolean checkInput(int value, int row, int column, int[][] currentBoard){
 
-//        for(int i = 0; i <BoardRepository.SIZE; i++)
-//            for(int j =0; j<BoardRepository.SIZE;j++)
-//                if(board[i][j] != 0)
-//                    currentBoard[i][j] = board[i][j];
-//                else if(userBoard[i][j] != 0){
-//                    currentBoard[i][j] = userBoard[i][j];
-//        }
-//
         currentBoard[row][column] = value;
 
         if(checkColumn(row, column,currentBoard) && checkRow(row, column, currentBoard) && checkSquare(row, column, currentBoard))

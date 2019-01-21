@@ -16,16 +16,14 @@ public class BoardGenerator {
     private static final Random random = new Random();
     private final BoardValidation boardValidation = new BoardValidation();
 
-    private Cell cell;
     private List<Cell> cellList;
 
-    public int[][] renderBoard(String mode){
+    public void renderBoard(String mode){
         cellList = new ArrayList<>();
         resetBoard();
         setMode(mode);
         setBoard(0,0);
         clearRandomCells();
-        return getBoard();
     }
 
     public int[][] getBoard(){
@@ -47,10 +45,10 @@ public class BoardGenerator {
         do {
             int nextRow, nextColumn;
             defaultBoard[row][column] = random.nextInt(9) + 1;
-            if (boardValidation.checkColumn(row, column, defaultBoard) && boardValidation.checkRow(row, column, defaultBoard) && boardValidation.checkSquare(row, column, defaultBoard)) {
+            if (boardValidation.checkInput(defaultBoard[row][column],row, column, defaultBoard) ) {
 
                 if(row == 8 && column == 8){
-                    cell = new Cell("default",row,column);
+                    Cell cell = new Cell("default",row,column);
                     cellList.add(cell);
                 }
 
@@ -67,7 +65,7 @@ public class BoardGenerator {
                     return true;
 
                 if(setBoard(nextRow, nextColumn)){
-                    cell = new Cell("default",row,column);
+                    Cell cell = new Cell("default",row,column);
                     cellList.add(cell);
                     return true;
                 }
@@ -135,10 +133,6 @@ public class BoardGenerator {
                 if(defaultBoard[i][j] == 0)
                     return false;
         return true;
-    }
-
-    public boolean isEndOfGame(){
-        return checkStatus();
     }
 
     private void resetBoard(){

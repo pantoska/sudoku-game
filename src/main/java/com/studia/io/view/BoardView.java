@@ -23,7 +23,6 @@ public class BoardView {
                 context.fillRoundRect(positionX, positionY, width, width, 10, 10);
             }
         }
-
         context.setStroke(Color.GRAY);
         context.setLineWidth(5);
         context.strokeRoundRect(selectedColumn * 50 + 2, selectedRow * 50 + 2, 46, 46, 10, 10);
@@ -47,42 +46,21 @@ public class BoardView {
                             context.setFill(Color.BLACK);
                             context.setFont(new Font(20));
 
-                            if (initial[row][col] != 0) {
+                            if (initial[row][col] != 0)
                                 context.fillText(initial[row][col] + "", position_x, position_y);
-                            }
-
                         }
+
                         else if(c.getState().equals("user")){
 
                             context.setFill(Color.RED);
                             context.setFont(new Font(20));
 
-                            if (initial[row][col] != 0) {
+                            if (initial[row][col] != 0)
                                 context.fillText(initial[row][col] + "", position_x, position_y);
-
-                            }
                         }
                     }
                 }
-
-
-//                context.setFill(Color.RED);
-//                context.setFont(new Font(20));
-//
-//                if (initial[row][col] != 0) {
-//                    context.fillText(initial[row][col] + "", position_x, position_y);
-//
-//                }
-//
-//                context.setFill(Color.BLACK);
-//                context.setFont(new Font(20));
-//
-//                if (initial[row][col] != 0) {
-//                    context.fillText(initial[row][col] + "", position_x, position_y);
-//                }
-
             }
         }
     }
-
 }
