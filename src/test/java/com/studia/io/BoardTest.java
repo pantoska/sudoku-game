@@ -88,8 +88,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testMode()
-    {
+    public void testMode() {
         boardGenerator.renderBoard(GameMode.MEDIUM.getMode());
         int length = 0;
         List<Cell> list = boardGenerator.getCellList();
@@ -98,5 +97,25 @@ public class BoardTest {
                 length++;
         }
         Assert.assertEquals(true, length <= 50);
+    }
+
+
+    @Test
+    public void testClearCell(){
+        boardGenerator.renderBoard(GameMode.MEDIUM.getMode());
+        List<Cell> list = boardGenerator.getCellList();
+        int[][] board = boardGenerator.getBoard();
+        int row = 0;
+        int column = 0;
+        for(Cell cell: list) {
+            if (cell.getState().equals("user")){
+                row = cell.getRow();
+                column = cell.getColumn();
+                break;
+            }
+        }
+
+        boardGenerator.clearCell(row,column);
+        Assert.assertEquals(0, board[row][column]);
     }
 }
