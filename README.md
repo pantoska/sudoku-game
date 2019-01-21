@@ -9,3 +9,9 @@ Desktop game for classes
 * JavaFX
 * Scene Builder
 
+## Junit
+
+```bash
+./gradlew test
+```
+
